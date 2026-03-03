@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;600&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #opening-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 100;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+        }
+
+        .click-here {
+            cursor: pointer;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        .click-here h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+
+        .click-here p {
+            color: #fff;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.3);
+            padding: 15px 40px;
+            border-radius: 30px;
+            border: 2px solid #fff;
+            transition: all 0.3s ease;
+        }
+
+        .click-here p:hover {
+            background: #fff;
+            color: #ff6b6b;
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        #slideshow {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            animation: fadeIn 1s ease;
+        }
+
+        .slide img.bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(70%);
+        }
+
+        .text-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            width: 85%;
+            max-width: 600px;
+            z-index: 10;
+        }
+
+        .text-box h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            color: #fff740;
+        }
+
+        .text-box p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+            margin-bottom: 30px;
+        }
+
+        .foto-kecil {
+            width: 150px;
+            height: 150px;
+            background: white;
+            padding: 10px 10px 40px 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transform: rotate(-5deg);
+            margin: 0 auto 20px auto;
+            opacity: 0;
+            transform: translateY(20px) rotate(-5deg);
+            transition: all 0.8s ease;
+        }
+
+        .slide.active .foto-kecil {
+            opacity: 1;
+            transform: translateY(0) rotate(-5deg);
+        }
+
+        .foto-kecil img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tombol-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-prev {
+            background: rgba(255,255,255,0.3);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-next {
+            background: #fff740;
+            color: #333;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #f00;
+            animation: fall linear forwards;
+            z-index: 50;
+        }
+
+        .hati {
+            position: absolute;
+            font-size: 30px;
+            animation: floatUp linear forwards;
+            z-index: 50;
+        }
+
+        #popup-whatsapp {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .popup-content h2 {
+            color: #25D366;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .popup-content p {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .btn-whatsapp {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-tutup {
+            display: block;
+            margin-top: 15px;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; } 
+            to { opacity: 1; } 
+        }
+        
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); }
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0); opacity: 1; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+
+        @media only screen and (max-width: 600px) {
+            .click-here h1 { font-size: 2rem; }
+            .text-box h1 { font-size: 2rem; }
+            .text-box p { font-size: 1rem; }
+            .btn { padding: 10px 20px; font-size: 0.9rem; }
+            .foto-kecil { width: 120px; height: 120px; padding-bottom: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="opening-screen" onclick="bukaHadiah()">
+        <div class="click-here">
+            <h1>🎉 Heyy kamu apa kabar? ada sesuatu buat kamu! 🎉</h1>
+            <p>👆 PENCET INI YAAA👆</p>
+        </div>
+    </div>
+
+    <div id="slideshow">
+                  
+        <div class="slide">
+            <img class="bg" src="Latar1.jpg">
+            <div class="text-box">
+                <div class="foto-kecil">
+                    <img src="Latar1.jpg">
+                </div>
+                <h1>Happy Birthday! 🎂</h1>
+                <p>Selamat ulang tahun yang ke-12 teh RISAA RISOLLL!<br>Seiring bertambahnya usia bukan hanya sekedar waktu, tapi halaman baru yang ditulis dengan doa dan harapan. Satu tahun bertambah, semesta berbisik: Teruslah tumbuh menjadi indah <3</p>
+                <div class="tombol-container">
+                    <button class="btn btn-prev" onclick="plusSlides(-1)">BACK</button>
+                    <button class="btn btn-next" onclick="plusSlides(1)">NEXT ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <img class="bg" src="Latar2.jpg">
+            <div class="text-box">
+                <div class="foto-kecil">
+                    <img src="Latar2.jpg" alt="Foto 2">
+                </div>
+                <h1> Kamu jaga diri baik baik yaa🌈</h1>
+                <p>Semoga Allah menuntun setiap langkah kecilmu dengan cahaya-Nya, melembutkan harimu dengan kebaikan, dan menuliskan takdir indah di setiap perjalananmu. Semoga senyummu selalu menjadi tanda syukur, dan hatimu tetap teduh dalam penjagaan-Nya. 🌙<br>Aku senang bisa mengenalmu</p>
+                <div class="tombol-container">
+                    <button class="btn btn-prev" onclick="plusSlides(-1)">BACK</button>
+                    <button class="btn btn-next" onclick="plusSlides(1)">NEXT ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <img class="bg" src="Latar3.jpg">
+            <div class="text-box">
+                <div class="foto-kecil">
+                    <img src="Latar3.jpg" alt="Foto 3">
+                </div>
+                <h1>Tetap Jadi Risaa! 🎊</h1>
+                <p>Di setiap tawamu, ada bahagia yang menular. Di setiap langkahmu, ada harapan sedang tumbuh<br>Ada kekuatan yang tumbuh sunyi dalam dirimu. Banyak kebaikan yang kau sebarkan tanpa riuh, namun terasa didalam hati. Tentang masa depan ia menunggu dengan pintu pintu yang terang. Dunia memang enggan berkata, tapi dia diam diam bersyukur karena kau ada, RISAA 7 Maret 2005</p>
+                <div class="tombol-container">
+                    <button class="btn btn-prev" onclick="plusSlides(-1)">BACK</button>
+                    <button class="btn btn-next" onclick="plusSlides(1)">NEXT ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <img class="bg" src="Latar4.jpg">
+            <div class="text-box">
+                <div class="foto-kecil">
+                    <img src="Latar4.jpg" alt="Foto 4">
+                </div>
+                <h1 style="font-size: 3rem; color: #ff6b6b;">Terus Semangat yaa, RISAA ❤️</h1>
+                <p>Diantara banyaknya ketidak sengajaan, mengenalmu adalah ketidaksengajaan terindah<br>Terimakasih udah mampir dalam hidupku, dari kamu aku belajar banyak hal! 💕</p>
+                <div class="tombol-container">
+                    <button class="btn btn-prev" onclick="plusSlides(-1)">BACK</button>
+                    <button class="btn btn-next" onclick="selesai()">Selesai ✨</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="popup-whatsapp">
+        <div class="popup-content">
+            <h2>📸 Kirim Foto Reaksimu!</h2>
+            <p>Aku pengen lihat gimana reaksi lucu kamuuu :)</p>
+            <a href="https://wa.me/6285225179104?text=Halo!%20Ini%20foto%20reaksiku%20lihat%20ucapan%20ulang%20yang kamu buat!%20%F0%9F%98%8D" class="btn-whatsapp" target="_blank">
+                📱 Kirim ke WhatsApp
+            </a>
+            <br>
+            <button class="btn-tutup" onclick="tutupPopup()"></button>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        
+        function bukaHadiah() {
+            const opening = document.getElementById('opening-screen');
+            const slideshow = document.getElementById('slideshow');
+            opening.style.transform = "scale(1.5)";
+            opening.style.opacity = "0";
+            setTimeout(() => {
+                opening.style.display = "none";
+                slideshow.style.display = "block";
+            }, 800);
+            document.querySelector('.slide').classList.add('active');
+            buatKonfetti();
+        }
+
+        function showSlides(n) {
+            let slides = document.getElementsByClassName("slide");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex-1].style.display = "block";
+            setTimeout(() => {
+                slides[slideIndex-1].classList.add('active');
+            }, 100);
+        }
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+            buatKonfetti();
+        }
+
+        function selesai() {
+            buatHati();
+            setTimeout(() => {
+                document.getElementById('popup-whatsapp').style.display = 'flex';
+            }, 2000);
+        }
+
+        function tutupPopup() {
+            document.getElementById('popup-whatsapp').style.display = 'none';
+        }
+
+        function buatKonfetti() {
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff9ff3'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-20px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => { confetti.remove(); }, 4000);
+                }, i * 30);
+            }
+        }
+
+        function buatHati() {
+            const hatiEmojis = ['❤️', '💕', '💖', '💗', '💓', '💞', '💘', '💝'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const hati = document.createElement('div');
+                    hati.className = 'hati';
+                    hati.innerText = hatiEmojis[Math.floor(Math.random() * hatiEmojis.length)];
+                    hati.style.left = Math.random() * 100 + 'vw';
+                    hati.style.top = '100vh';
+                    hati.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                    hati.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    document.body.appendChild(hati);
+                    setTimeout(() => { hati.remove(); }, 6000);
+                }, i * 30);
+            }
+        }
+
+        showSlides(slideIndex);
+    </script>
+</body>
+</html>
